@@ -17,6 +17,11 @@ ST = 0b10000100  # ST function
 JMP = 0b01010100  # JMP - jump to address stored in given register
 IRET = 0b00010011  # IRET - interrupt return
 PRA = 0b01001000  # PRA - print alpha
+# CMP - compare, an ALU instruction, compares two values and set appropriate flag
+CMP = 0b10100111
+# JMP - Jump equal - IF EQUAL Flag is TRUE, jump to address stored in given register
+JEQ = 0b01010101
+JNE = 0b01010110  # JNE - Jump Not Equal - IF EQUAL flag is FALSE jump to address stored in given register
 
 
 class CPU:
@@ -44,6 +49,9 @@ class CPU:
         self.branchtable[IRET] = self.handle_IRET
         self.branchtable[JMP] = self.handle_jump
         self.branchtable[PRA] = self.handle_PRA
+        self.branchtable[CMP] = self.handle_CMP
+        self.branchtable[JEQ] = self.handle_JEQ
+        self.branchtable[JNE] = self.handle_JNE
 
     def load(self):
         """Load a program into memory."""
@@ -70,6 +78,8 @@ class CPU:
             self.reg[reg_a] += self.reg[reg_b]
         elif op == 'MUL':
             self.reg[reg_a] *= self.reg[reg_b]
+        elif op == 'CMP':
+            pass
         # elif op == "SUB": etc
         else:
             raise Exception("Unsupported ALU operation")
@@ -162,6 +172,15 @@ class CPU:
         return_value = self.ram[self.reg[self.SP]]
         self.reg[self.SP] += 1
         self.pc = return_value
+
+    def handle_CMP(self):
+        pass
+
+    def handle_JEQ(self):
+        pass
+
+    def handle_JNE(self):
+        pass
 
     def handle_ST(self):
         pass
