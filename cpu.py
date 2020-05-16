@@ -35,6 +35,7 @@ class CPU:
         self.SP = 7
         self.reg[self.SP] = len(self.ram) - 1
         self.running = False
+        self.EQUAL = None
         self.branchtable = {}
         self.branchtable[HLT] = self.handle_halt
         self.branchtable[LDI] = self.handle_save
@@ -79,7 +80,7 @@ class CPU:
         elif op == 'MUL':
             self.reg[reg_a] *= self.reg[reg_b]
         elif op == 'CMP':
-            pass
+            self.EQUAL = (self.reg[reg_a] == self.reg[reg_b])
         # elif op == "SUB": etc
         else:
             raise Exception("Unsupported ALU operation")
@@ -173,8 +174,15 @@ class CPU:
         self.reg[self.SP] += 1
         self.pc = return_value
 
+    def handle_jump(self):
+        reg_loc = self.ram[self.pc + 1]
+        jump_to = self.reg[reg_loc]
+        self.pc = jump_to
+
     def handle_CMP(self):
-        pass
+        # Compares values in the given regusters, handled by ALU
+        self.alu('CMP', self.ram[self.pc + 1], self.ram[self.pc + 2])
+        self.pc += 3
 
     def handle_JEQ(self):
         pass
@@ -186,9 +194,6 @@ class CPU:
         pass
 
     def handle_IRET(self):
-        pass
-
-    def handle_jump(self):
         pass
 
     def handle_PRA(self):
