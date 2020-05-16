@@ -185,10 +185,20 @@ class CPU:
         self.pc += 3
 
     def handle_JEQ(self):
-        pass
+        if self.EQUAL == True:
+            reg_loc = self.ram[self.pc + 1]
+            jump_to = self.reg[reg_loc]
+            self.pc = jump_to
+        else:
+            self.pc += 2
 
     def handle_JNE(self):
-        pass
+        if self.EQUAL == False:
+            reg_loc = self.ram[self.pc + 1]
+            jump_to = self.reg[reg_loc]
+            self.pc = jump_to
+        else:
+            self.pc += 2
 
     def handle_ST(self):
         pass
